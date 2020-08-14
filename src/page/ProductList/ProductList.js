@@ -1,30 +1,11 @@
 import React, { Component } from 'react';
 import Table from './../../component/table/Table';
 import Product from './../../component/product/Product';
-
-const products = [
-    {
-        code: 'IPHONE',
-        name: 'Iphone XS Max',
-        price: 599,
-        status: true
-    },
-    {
-        code: 'OPPO',
-        name: 'Oppo F1s',
-        price: 199,
-        status: false
-    },
-    {
-        code: 'SAMSUNG',
-        name: 'Samsung Note 10 Lite',
-        price: 399,
-        status: true
-    }
-];
+import { connect } from 'react-redux';
 
 class ProductList extends Component {
     render() {
+        var {products} = this.props;
         return (
             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <button type="button" className="btn btn-primary mb-10">Thêm sản phẩm</button>
@@ -37,9 +18,9 @@ class ProductList extends Component {
 
     showProduct = (products) => {
         var result = null;
-        if(products.length > 0) {
+        if (products.length > 0) {
             result = products.map((product, index) => {
-                return(
+                return (
                     <Product key={index} index={index} product={product} />
                 );
             })
@@ -48,4 +29,10 @@ class ProductList extends Component {
     }
 }
 
-export default ProductList;
+const mapStateToProps = state => {
+    return {
+        products: state.products
+    }
+};
+
+export default connect(mapStateToProps, null)(ProductList);

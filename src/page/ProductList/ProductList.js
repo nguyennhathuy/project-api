@@ -6,19 +6,19 @@ const products = [
     {
         code: 'IPHONE',
         name: 'Iphone XS Max',
-        Price: 599,
+        price: 599,
         status: true
     },
     {
         code: 'OPPO',
         name: 'Oppo F1s',
-        Price: 199,
+        price: 199,
         status: false
     },
     {
         code: 'SAMSUNG',
         name: 'Samsung Note 10 Lite',
-        Price: 399,
+        price: 399,
         status: true
     }
 ];

@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import './App.css';
 import Menu from './component/menu/Menu';
-import Table from './component/table/Table';
+import {BrowserRouter as Router} from 'react-router-dom';
+import Routes from './Routes';
+
 class App extends Component {
     render() {
         return (
-            <div>
+            <Router>
                 <Menu />
                 <div className="container">
                     <div className="row">
-                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <button type="button" className="btn btn-primary mb-10">Thêm sản phẩm</button>
-                            <Table /> 
-                        </div>
+                        <Routes />
                     </div>
                 </div>
-            </div>
+            </Router>
         );
     }
 }

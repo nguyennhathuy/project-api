@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 
 class Product extends Component {
     render() {
+        var { index, product } = this.props;
+        var status = product.status ? 'Con hang' : 'Het hang';
         return (
             <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>Iphone 6 Plus</td>
-                <td>500</td>
+                <td>{index + 1}</td>
+                <td>{product.code}</td>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
                 <td>
-                    <span className="label label-warning">Còn hàng</span>
+                    <span className={`label label-${product.status ? 'success' : 'warning'}`}>{status}</span>
                 </td>
                 <td>
                     <button type="button" className="btn btn-success">Sửa</button>&nbsp;

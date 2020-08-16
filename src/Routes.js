@@ -19,13 +19,13 @@ const routes = [
     {
         to: '/product/add',
         exact: false,
-        main: ({match}) => <ProductAction match={match}/>
+        main: ({match, history}) => <ProductAction match={match} history={history}/>
     },
     
     {
         to: '/product/:id/edit',
         exact: false,
-        main: ({match}) => <ProductAction match={match}/>
+        main: ({match, history}) => <ProductAction match={match} history={history}/>
     },
     {
         to: '',

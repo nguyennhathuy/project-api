@@ -1,25 +1,31 @@
 import React, { Component } from 'react';
-import callApi from './../../utils/apiCaller';
+import * as Actions from './../../actions/index';
+import { connect } from 'react-redux';
 
 class ProductAction extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: null,
             txtName: '',
             txtPrice: '',
             cbkStatus: false
         }
     }
     componentDidMount() {
-        var { match } = this.props;
-        if (match.params.id) {
-            callApi(`products/${match.params.id}`, 'GET', null).then(res => {
-                var data = res.data;
-                this.setState({
-                    txtName: data.name,
-                    txtPrice: data.price,
-                    cbkStatus: data.status
-                })
+        var {match} = this.props;
+        if(match.params.id){
+            this.props.onEditProductRequest(match.params.id);
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        if(nextProps && nextProps.productEditing){
+            var {productEditing} = nextProps;
+            this.setState({
+                id: productEditing.id,
+                txtName: productEditing.name,
+                txtPrice: productEditing.price,
+                cbkStatus: productEditing.status
             })
         }
     }
@@ -34,28 +40,23 @@ class ProductAction extends Component {
             [name]: value
         })
     }
+
     onSubmit = (e) => {
         e.preventDefault();
         var { match } = this.props;
         var id = match.params.id;
-        if(id) {
-            callApi(`products/${id}`, 'PUT', {
-                name: this.state.txtName,
-                price: this.state.txtPrice,
-                status: this.state.cbkStatus
-            }).then(res => {
-                this.props.history.goBack();
-            });
-        } else {
-            callApi('products', 'POST', {
-                name: this.state.txtName,
-                price: this.state.txtPrice,
-                status: this.state.cbkStatus
-            }).then(res => {
-                this.props.history.goBack();
-            })
+        var product = {
+            id: this.state.id,
+            name: this.state.txtName,
+            price: this.state.txtPrice,
+            status: this.state.cbkStatus
         }
-        
+        if (id) {
+            this.props.onUpdateProductRequest(product);
+        } else {
+            this.props.onAddProductRequest(product);
+        }
+        this.props.history.goBack();
     }
     render() {
         var { txtName, txtPrice, cbkStatus } = this.state;
@@ -108,4 +109,25 @@ class ProductAction extends Component {
     }
 }
 
-export default ProductAction;
+
+const mapStateToProps = state => {
+    return {
+        productEditing: state.productEditing
+    }
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onAddProductRequest: (product) => {
+            dispatch(Actions.onAddProductRequest(product));
+        },
+        onEditProductRequest: (id) => {
+            dispatch(Actions.onEditProductRequest(id));
+        },
+        onUpdateProductRequest: (product) => {
+            dispatch(Actions.onUpdateProductRequest(product));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductAction);

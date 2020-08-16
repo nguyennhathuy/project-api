@@ -1,49 +1,19 @@
 import React, { Component } from 'react';
 import Table from './../../component/table/Table';
 import Product from './../../component/product/Product';
-import callApi from './../../utils/apiCaller';
 import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
+import * as Actions from './../../actions/index';
 
 class ProductList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            products: []
-        }
-    }
     componentDidMount() {
-        callApi('products', 'GET', null).then(res => {
-            this.setState({
-                products: res.data
-            })
-        });
+        this.props.onFetchProductsRequest();
     }
     onDelete = (id) => {
-        var { products } = this.state;
-        callApi(`products/${id}`, 'DELETE', null).then(res => {
-            if (res.status === 200) {
-                var index = this.findIndex(products, id);
-                if(index !== -1){
-                    products.splice(index, 1);
-                    this.setState({
-                        products: products
-                    })
-                }
-            }
-        });
-    }
-    findIndex = (products, id) => {
-        var result = -1;
-        for (var i = 0; i < products.length; i++) {
-            if (products[i].id === id) {
-                result = i;
-                break;
-            }
-        }
-        return result;
+        this.props.onDeleteProductRequest(id);
     }
     render() {
-        var { products } = this.state;
+        var { products } = this.props;
 
         return (
             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -67,4 +37,21 @@ class ProductList extends Component {
     }
 }
 
-export default ProductList;
+const mapStateToProps = state => {
+    return{
+        products: state.products
+    }
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onFetchProductsRequest: () => {
+            dispatch(Actions.onFetchProductsRequest());
+        },
+        onDeleteProductRequest: (id) => {
+            dispatch(Actions.onDeleteProductRequest(id));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

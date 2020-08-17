@@ -33,7 +33,6 @@ class Menu extends Component {
     render() {
         return (
             <nav className="navbar navbar-default">
-                <span className="navbar-brand">Title</span>
                 <ul className="nav navbar-nav">
                     {this.showMenuProduct(menus)}
                 </ul>

@@ -8,6 +8,7 @@ class ProductAction extends Component {
         this.state = {
             id: null,
             txtName: '',
+            txtCode: '',
             txtPrice: '',
             cbkStatus: false
         }
@@ -24,6 +25,7 @@ class ProductAction extends Component {
             this.setState({
                 id: productEditing.id,
                 txtName: productEditing.name,
+                txtCode: productEditing.code,
                 txtPrice: productEditing.price,
                 cbkStatus: productEditing.status
             })
@@ -48,6 +50,7 @@ class ProductAction extends Component {
         var product = {
             id: this.state.id,
             name: this.state.txtName,
+            code: this.state.txtCode,
             price: this.state.txtPrice,
             status: this.state.cbkStatus
         }
@@ -59,7 +62,7 @@ class ProductAction extends Component {
         this.props.history.goBack();
     }
     render() {
-        var { txtName, txtPrice, cbkStatus } = this.state;
+        var { txtName, txtPrice, cbkStatus, txtCode } = this.state;
         return (
             <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <form onSubmit={this.onSubmit}>
@@ -73,6 +76,16 @@ class ProductAction extends Component {
                             className='form-control'
                             name='txtName'
                             value={txtName}
+                            onChange={this.onChange}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Mã sản phẩm: </label>
+                        <input
+                            type="text"
+                            className='form-control'
+                            name='txtCode'
+                            value={txtCode}
                             onChange={this.onChange}
                         />
                     </div>
